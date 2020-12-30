@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: url(https://thumbs.gfycat.com/DetailedReadyGalapagosdove-size_restricted.gif) 50% 50% no-repeat;
+  background-size: cover;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  font: 700 100px/1 sans-serif;
+  text-align: center;
+}
