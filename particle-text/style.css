@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+canvas {
+  background: #07689f;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.links {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+a {
+  color: #ffffff;
+  display: block;
+  transition: opacity .5s ease;
+}
+a:hover {
+  opacity: .5;
+}
