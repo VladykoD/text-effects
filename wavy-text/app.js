@@ -1,17 +1,24 @@
 class Animation {
    constructor() {
-      this.mainText = 'RAINBOW';
+      this.mainText = 'sea';
       this.textSliceWidth = 1;
-      this.textSize = 260;
+      this.textSize = 500;
       this.textSpeed = -6;
       this.waveAmplitude = 10
       this.waveLength = 200;
       this.waveSpeed = -2;
       this.c = new Canvas();
+      this.loadImage('https://i.pinimg.com/originals/22/ce/8e/22ce8efa4928d48fdb0bc56f3686d4d3.jpg')
+   }
+   init() {
       this.createTextData();
       this.setupProperties();
-     // this.createColorSet();
-     // this.replaceTextColor();
+
+      window.addEventListener('resize', () => {
+         this.c.fitToScreen();
+         this.createTextData();
+         this.setupProperties();
+      })
       this.animate()
    }
    setupProperties() {
@@ -23,39 +30,15 @@ class Animation {
       this.textX = 0;
    }
    createTextData() {
-      this.textArea = this.c.drawText(this.mainText, this.textSize, 200, 300);
-
-      this.addImageLayer();
+      this.textArea = this.c.drawText(this.mainText);
       this.textData = this.c.gid(this.textArea);
       this.c.clear();
    }
 
-   createColorSet() {
-      for (let i = 0; i < this.textArea.w; i++) {
-         const currentColor = `hsl(${i / this.textArea.w * 360}, 100%, 50%)`
-         this.c.rect(currentColor, i, 300, 1, 1);
-      }
-      this.colorSetData = this.c.gid({x: 0, y: 300, w: this.textArea.w, h: 1})
-   }
-
-   replaceTextColor() {
-      const colorSetPixelData = this.colorSetData.data;
-      const textPixelData = this.textData.data;
-
-      for (let x = 0; x < this.textData.width; x++) {
-         for (let y = 0; y < this.textData.height; y++) {
-            const red = (x + y * this.textData.width) * 4;
-            const green = red + 1;
-            const blue = red + 2;
-            const alpha = red + 3;
-
-            if (textPixelData[alpha] > 0) {
-               textPixelData[red] = colorSetPixelData[x * 4]
-               textPixelData[green] = colorSetPixelData[x * 4 + 1]
-               textPixelData[blue] = colorSetPixelData[x * 4 + 2]
-            }
-         }
-      }
+   loadImage(url) {
+      this.imgLayer = new Image();
+      this.imgLayer.src = url;
+      this.imgLayer.onload = () => this.init()
    }
 
    wave() {
@@ -80,11 +63,12 @@ class Animation {
    }
    addImageLayer() {
       this.c.gco(`source-atop`);
-      this.c.ctx.drawImage(this.c.createGradient(), 0, 0)
+      this.c.ctx.drawImage(this.imgLayer, 0, 0)
    }
    animate() {
       this.c.clear();
       this.wave();
+      this.addImageLayer();
       requestAnimationFrame(() => this.animate());
    }
 }
@@ -102,18 +86,29 @@ class Canvas {
       this.cnv = document.querySelector(`canvas`);
       this.ctx = this.cnv.getContext('2d');
    }
+
    fitToScreen() {
       this.w = this.cnv.width = innerWidth * 2;
       this.h = this.cnv.height = innerHeight * 2;
    }
-   drawText(t = 'hello', fs = 90, x = 0, y = 0) {
-      this.ctx.font = `${fs}px Arial Black,  sans-serif`;
+
+   fitTextToCanvas(textWidth, textHeight) {
+      return this.w / textWidth * textHeight;
+   }
+
+   drawText(t = 'hello') {
+      this.ctx.font = `${this.h}px Arial Black,  sans-serif`;
+
+      const newTextSize = this.fitTextToCanvas(this.ctx.measureText(t).width, this.h)
+      this.ctx.font = `${newTextSize}px Arial Black,  sans-serif`;
+
+
       this.ctx.fillStyle = 'white';
       this.ctx.textBaseline = 'top'
-      this.ctx.fillText(t, x, y);
+      this.ctx.fillText(t, 0, 0);
 
       const fw = this.ctx.measureText(t).width;
-      return {x: x, y: y, w: fw, h: fs};
+      return {x: 0, y: 0, w: fw, h: newTextSize};
    }
 
    createGradient() {
