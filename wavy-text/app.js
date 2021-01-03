@@ -8,7 +8,7 @@ class Animation {
       this.waveLength = 200;
       this.waveSpeed = -2;
       this.c = new Canvas();
-      this.loadImage('https://i.pinimg.com/originals/22/ce/8e/22ce8efa4928d48fdb0bc56f3686d4d3.jpg')
+      this.loadImage('bg2.jpg')
    }
    init() {
       this.createTextData();
@@ -63,7 +63,21 @@ class Animation {
    }
    addImageLayer() {
       this.c.gco(`source-atop`);
-      this.c.ctx.drawImage(this.imgLayer, 0, 0)
+      this.coverImage(this.imgLayer, 'cover')
+      ///this.c.ctx.drawImage(this.imgLayer, 0, 0)
+   }
+   coverImage(img, type) {
+      const imgRatio = img.height / img.width;
+      const winRatio = this.c.h / this.c.w;
+      if ((imgRatio < winRatio && type === 'contain') || (imgRatio > winRatio && type === 'cover')) {
+         const h = this.c.w * imgRatio;
+         this.c.ctx.drawImage(this.imgLayer, 0, (this.c.h - h) / 2, this.c.w, h);
+      }
+      if ((imgRatio > winRatio && type === 'contain') || (imgRatio < winRatio && type === 'cover')) {
+         const w = this.c.w * winRatio / imgRatio
+         this.c.ctx.drawImage(this.imgLayer, (this.c.w - w) / 2, 0, w, this.c.h);
+      }
+
    }
    animate() {
       this.c.clear();
