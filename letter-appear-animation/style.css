@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: url(https://i.pinimg.com/originals/5a/05/70/5a057006086fcbcb20f680da47138fd4.jpg) 50% 50% no-repeat;
+  background-size: cover;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  font: 700 40px/1 sans-serif;
+  text-align: center;
+}
+
+h1 {
+  display: flex;flex-wrap: nowrap;
+}
+
+span {
+  min-width: .3em;
+  opacity: 1;
+  transition: all .4s ease;
+  display: flex;
+  transform-origin: 50% 100%;
+  transform: perspective(80px) rotateX(-35px);
+}
+
+span.fade {
+  opacity: 1;
+  transform: perspective(80px) rotateX(-35deg);
+}

@@ -8,7 +8,7 @@ class Animation {
       this.waveLength = 200;
       this.waveSpeed = -2;
       this.c = new Canvas();
-      this.loadImage('bg2.jpg')
+      this.loadImage('https://i.pinimg.com/originals/b7/ff/e5/b7ffe556b5c07784ab6ee8e58ee08881.jpg')
    }
    init() {
       this.createTextData();
