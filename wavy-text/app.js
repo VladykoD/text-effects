@@ -77,7 +77,6 @@ class Animation {
          const w = this.c.w * winRatio / imgRatio
          this.c.ctx.drawImage(this.imgLayer, (this.c.w - w) / 2, 0, w, this.c.h);
       }
-
    }
    animate() {
       this.c.clear();
